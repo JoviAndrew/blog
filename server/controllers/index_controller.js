@@ -21,13 +21,10 @@ module.exports = {
                         })
                     }
                     else{
-                        let fullname = firstname + ' ' + lastname
-                        let token = jwt.sign({id: userData._id, username: username}, process.env.SECRET)
+                        let token = jwt.sign({id: userData._id, username: userData.username}, process.env.SECRET)
                         res.json({
                             message: 'Success login',
                             token: token,
-                            firstname: userData.firstname,
-                            lastname: userData.lastname,
                             username: userData.username
                         })
                     }
@@ -39,17 +36,10 @@ module.exports = {
 
         var regexUsername = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         let password = req.body.password;
-        let firstname = req.body.firstname;
-        let lastname = req.body.lastname;
         let letter = /[a-zA-Z]/; 
         let number = /[0-9]/;
         let goodPassword = letter.test(password) && number.test(password);
-        if(firstname == '' || lastname == ''){
-            res.json({
-                message: 'Fill in name'
-            })
-        }
-        else if(password.length < 6){
+        if(password.length < 6){
             res.json({
                 message: 'Password too short!'
             })
@@ -66,7 +56,6 @@ module.exports = {
                 username: req.body.username
             })
             .then(function(userData){
-                console.log(userData);
                 if(userData != null){
                     res.status(400).json({
                         message: "username has been taken!",
@@ -76,16 +65,17 @@ module.exports = {
                     let hash = bcrypt.hashSync(password, salt);
                         users
                         .create({
-                            firstname: firstname,
-                            lastname: lastname,
                             username: req.body.username,
                             password: hash,
                         })
                         .then(function(result){
                             res.status(200).json({
                                 message: "success register a new user",
-                                result: result
+                                result: result,
+                                token: token,
+                                username: userData.username
                             })
+                            
                         })
                 }
             })

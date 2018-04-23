@@ -13,6 +13,7 @@ const indexRoute = require('./routers/index_route.js');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(morgan('dev'));
 
 app.use('/index', indexRoute);
 
@@ -20,8 +21,8 @@ app.use('/home', homeRoute)
 
 app.use(cors());
 
-// app.listen(3000, () => {
-//     console.log('listening on port 3000');
-// })
+app.listen(3000, () => {
+    console.log('listening on port 3000');
+})
 
 module.exports=app;
