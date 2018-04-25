@@ -1,0 +1,85 @@
+<template>
+<div id="index">
+  <div class="row">
+    <div class="col-12">
+      <h1><strong>N-Blog</strong></h1>
+    </div>
+    <div class="mainBody col-12">
+      <div class="col-4"></div>
+      <div class="login col-4">
+        <h4 class="headerLogin"><strong>Login</strong></h4>
+        <label>Username:</label>
+        <input type="text" placeholder="email@mail.com" v-model="username">
+        <label>Password:</label>
+        <input type="password" placeholder="Password"  v-model="password">
+        <button class="btn btn-primary" @click="doLogin">Login</button>
+        <button class="btn btn-link" @click="goToRegister">Don't have an account? Register</button>
+      </div>
+      <div class="col-4"></div>
+    </div>
+  </div>
+</div>
+</template>
+
+<script>
+// @ is an alias to /src
+import axios from 'axios'
+
+export default {
+  name: 'index',
+  data () {
+    return {
+      username: '',
+      password: ''
+    }
+  },
+  methods: {
+    doLogin () {
+      let username = this.username
+      let password = this.password
+      let self = this
+
+      axios.post('http://localhost:3000/index/login', {username: username, password: password})
+        .then(function (response) {
+          alert(response.data.message)
+          console.log(response.data)
+          self.$router.push('/home')
+          localStorage.setItem('token', response.data.token)
+          localStorage.setItem('username', response.data.username)
+        })
+        .catch(function (err) {
+          alert('Username or password is incorrect')
+          console.log(err)
+        })
+    },
+    goToRegister () {
+      this.$router.push('/register')
+    }
+  }
+}
+</script>
+
+<style>
+
+.headerLogin{
+  margin: 3%;
+  margin-bottom: 5%
+}
+
+.login{
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black;
+  border-radius: 25px;
+  margin: 3%
+}
+
+.mainBody{
+  display: flex;
+  justify-content: center
+}
+
+.btn{
+  margin: 2%
+}
+</style>
