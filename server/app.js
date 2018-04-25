@@ -4,7 +4,6 @@ const app = express();
 const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/blog-test');
 mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@ds147469.mlab.com:47469/blog-proj-ph2`);
 
 const homeRoute = require('./routers/home_route.js')
@@ -21,8 +20,8 @@ app.use('/home', homeRoute)
 
 app.use(cors());
 
-app.listen(port, () => {
-    console.log(`listening on port ${port}`);
+app.listen(process.env.PORT, () => {
+    console.log(`listening on port ${process.env.PORT}`);
 })
 
-module.exports=app;
+// module.exports=app;

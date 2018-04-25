@@ -1,6 +1,6 @@
 const users = require('../models/user');
 const jwt = require('jsonwebtoken');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 module.exports = {
