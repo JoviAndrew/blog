@@ -1,13 +1,14 @@
 <template>
   <div id="register">
   <div class="row">
-    <div class="col-12">
-      <h1>N-Blog</h1>
-    </div>
     <div class="mainBody col-12">
       <div class="col-4"></div>
       <div class="login col-4">
         <h4 class="headerLogin"><strong>Register</strong></h4>
+				<label>First Name:</label>
+        <input type="text" placeholder="Tom" v-model="firstname">
+				<label>Last name:</label>
+        <input type="text" placeholder="Tommy" v-model="lastname">
         <label>Username:</label>
         <input type="text" placeholder="email@mail.com" v-model="username">
         <label>Password:</label>
@@ -35,7 +36,9 @@ name: 'register',
 		return {
 			username: '',
 			password: '',
-			confirm: ''
+			confirm: '',
+			firstname: '',
+			lastname: ''
 		}
 	},
 	methods: {
@@ -45,21 +48,26 @@ name: 'register',
 			}else{
 				let username = this.username
 				let password = this.password
+				let firstname = this.firstname
+				let lastname = this.lastname
 
 				axios.post('http://localhost:3000/index/register', 
 				{
 					username: username,
-					password: password
+					password: password,
+					firstname: firstname,
+					lastname: lastname
 				})
 				.then(function(response){
 					alert(response.data.message)
 					localStorage.setItem('token', response.data.token)
 					localStorage.setItem('username', response.data.username)
+					localStorage.setItem('firstname', response.data.firstname)
+          localStorage.setItem('lastname', response.data.lastname)
 					this.$router.push('/home')
 				})
 				.catch(function(err){
-					alert('Something went wrong')
-					console.log(err)
+					alert(err)
 				})
 			}
 		},
@@ -79,7 +87,7 @@ name: 'register',
 .login{
   display: flex;
   flex-direction: column;
-  border: 2px solid black;
+  border: 2px solid rgb(71, 71, 71);
   border-radius: 25px;
   margin: 3%
 }

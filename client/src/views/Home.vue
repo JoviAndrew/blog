@@ -1,13 +1,6 @@
 <template>
   <div id="home">
       <div class="row">
-          <div class="col-12">
-              <h2>N-Blog</h2>
-              <nav class="navbar">
-                <button class="btn btn-primary" v-on:click="sendToHome">Home</button>
-                <button class="btn btn-primary" v-on:click="doLogout">Logout</button>
-              </nav>
-          </div>
           <div class="mainBody col-9">
               <div class="col-12">
                   <div class="intro col-12">
@@ -53,7 +46,13 @@
                 </div>
 
           <div class="sideMenu col-3">
-              <button class="addNewPost btn btn-primary" data-toggle="modal" data-target="#addpostModal">Add New Post!</button>
+              <button class="addNewPost btn btn-outline-primary mt-4" data-toggle="modal" data-target="#addpostModal">Add New Post!</button>
+              <div class="profile mt-3">
+                <label><strong>{{firstname}} {{lastname}}</strong></label>
+              </div>
+			  <div class="mt-2">
+				  <label></label>
+			  </div>
 
                 <div class="modal fade" id="addpostModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -90,7 +89,9 @@ export default {
 			posts: null,
 			post_content: '',
 			post_header: '',
-			post_id: ''
+      post_id: '',
+      lastname: localStorage.getItem('lastname'),
+      firstname: localStorage.getItem('firstname')
 		}  
 	},
 	computed: {
@@ -99,15 +100,18 @@ export default {
 			}
 	},
 	created(){
-			this.posts = null
-			this.getAllPosts()
-			this.checklogin()
+		this.posts = null
+		this.getAllPosts()
+		this.checklogin()
 	},
 	methods: {
 		checklogin(){
 			let username = localStorage.getItem('username')
 			if(!username){
-				this.$router.push('/')
+				this.$store.commit('changeStatusFalse')
+			}else{
+        this.$store.commit('changeStatusTrue')
+        this.$store.dispatch('')
 			}
 		},
 		addPost(){
@@ -143,7 +147,8 @@ export default {
 		},
 		getAllPosts(){
 			let self = this
-			axios.get('http://localhost:3000/home/show')
+			let token = localStorage.getItem('token')
+			axios.get('http://localhost:3000/home/show', {headers: {token: token}})
 			.then(function(postData){
 				self.posts = postData.data.data                
 			})
@@ -154,11 +159,6 @@ export default {
 		},
 		sendToHome(){
 			this.$router.push('/home')
-		},
-		doLogout(){
-			alert('You have logged out!')
-			localStorage.clear();
-			this.$router.push('/')
 		},
 		deletePost(id){
 			let token = localStorage.getItem('token');
@@ -247,16 +247,13 @@ h2{
     margin-left: 2%;
     font-weight: bold
 }
-nav{
-    border: 2px solid black;
-    border-radius: 25px
-}
+
 .mainBody {
-    border: 1px solid black;
+    border: 1px solid rgb(228, 228, 228);
     border-radius: 25px
 }
 .sideMenu{
-    border: 1px solid black;
+    border: 1px solid rgb(228, 228, 228);
     border-radius: 25px
 }
 </style>

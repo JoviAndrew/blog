@@ -1,9 +1,6 @@
 <template>
 <div id="index">
   <div class="row">
-    <div class="col-12">
-      <h1><strong>N-Blog</strong></h1>
-    </div>
     <div class="mainBody col-12">
       <div class="col-4"></div>
       <div class="login col-4">
@@ -46,6 +43,8 @@ export default {
           self.$router.push('/home')
           localStorage.setItem('token', response.data.token)
           localStorage.setItem('username', response.data.username)
+          localStorage.setItem('firstname', response.data.firstname)
+          localStorage.setItem('lastname', response.data.lastname)
         })
         .catch(function (err) {
           alert('Username or password is incorrect')
@@ -69,7 +68,7 @@ export default {
 .login{
   display: flex;
   flex-direction: column;
-  border: 2px solid black;
+  border: 2px solid rgb(71, 71, 71);
   border-radius: 25px;
   margin: 3%
 }

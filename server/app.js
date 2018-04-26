@@ -20,8 +20,8 @@ app.use('/home', homeRoute)
 
 app.use(cors());
 
-app.listen(process.env.PORT, () => {
-    console.log(`listening on port ${process.env.PORT}`);
+app.listen(3000, () => {
+    console.log(`listening on port 3000`);
 })
 
 // module.exports=app;

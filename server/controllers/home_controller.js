@@ -3,16 +3,29 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     getAllPosts(req, res){
-        posts.find({})
-        .then(function(postData){
-            res.status(200).json({
-                message: 'success get posts',
-                data: postData
-            })
-        })
-        .catch(function(err){
-            message: err
-        })
+			const token = req.headers.token
+			jwt.verify(token, process.env.SECRET, function(err, result){
+					if(err){
+						res.send({
+							err: err,
+							message: 'Something went wrong with jwt'
+						})
+					}
+					else{
+						posts.find({
+							user: result.id
+						})
+						.then(function(postData){
+								res.status(200).json({
+										message: 'success get posts',
+										data: postData
+								})
+						})
+						.catch(function(err){
+								message: err
+						})
+					}
+			})
     },
     addPost(req, res){
 			const token = req.headers.token
