@@ -90,5 +90,20 @@ module.exports = {
         })
       }) 
     }
+  },
+  findAllUsers(req, res){
+    users.find({})
+    .then(function(userData){
+      res.status(200).json({
+        message: 'Success get all users',
+        data: userData
+      })
+    })
+    .catch(function(err){
+      req.status(500).json({
+        message: 'error while getting user data',
+        err: err
+      })
+    })
   }
 }

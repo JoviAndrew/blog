@@ -122,5 +122,22 @@ module.exports = {
 					})
 				}
 			})
+		},
+		findArticleByAuthor(req, res){
+			let userId = req.params.id
+			posts.find({user: userId})
+			.populate('user')
+			.then(function(postData){
+				res.status(200).json({
+					message: 'Success get posts',
+					data: postData
+				})
+			})
+			.catch(function(err){
+				res.status(500).json({
+					message: 'error while getting post',
+					err: err
+				})
+			})
 		}
 }

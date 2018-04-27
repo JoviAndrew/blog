@@ -2,8 +2,8 @@
 <div id="index">
   <div class="row">
     <div class="mainBody col-12">
-      <div class="col-4"></div>
-      <div class="login col-4">
+      <div class="col-xs-12 col-sm-12 col-lg-4"></div>
+      <div class="login col-xs-12 col-sm-12 col-lg-4">
         <h4 class="headerLogin"><strong>Login</strong></h4>
         <label>Username:</label>
         <input type="text" placeholder="email@mail.com" v-model="username">
@@ -12,7 +12,12 @@
         <button class="btn btn-primary" @click="doLogin">Login</button>
         <button class="btn btn-link" @click="goToRegister">Don't have an account? Register</button>
       </div>
-      <div class="col-4"></div>
+      <div class="col-xs-12 col-sm-12 col-lg-4 mt-5">
+        <h3>See their work!</h3>
+        <ul class="list-group">
+          <li class="list-group-item" v-for="(user, index) in users" :key="index" @click="goToBlog(user)">{{user.firstname}} {{user.lastname}}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
@@ -21,9 +26,16 @@
 <script>
 // @ is an alias to /src
 import axios from 'axios'
+import { mapState } from 'vuex'
 
 export default {
   name: 'index',
+  computed: mapState([
+    'users'
+  ]),
+  created () {
+    this.getAllUsers()
+  },
   data () {
     return {
       username: '',
@@ -36,7 +48,7 @@ export default {
       let password = this.password
       let self = this
 
-      axios.post('http://35.187.230.112/index/login', {username: username, password: password})
+      axios.post('http://localhost:3000/index/login', {username: username, password: password})
         .then(function (response) {
           alert(response.data.message)
           console.log(response.data)
@@ -53,6 +65,17 @@ export default {
     },
     goToRegister () {
       this.$router.push('/register')
+    },
+    getAllUsers() {
+      this.$store.dispatch('getAllUsers')
+    },
+    goToBlog(user){
+      let userData = {
+        userId: user._id,
+        firstname: user.firstname,
+        lastname: user.lastname
+      }
+      this.$router.push(`/blog/${userData.userId}`)
     }
   }
 }

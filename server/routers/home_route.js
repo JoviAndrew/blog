@@ -9,4 +9,6 @@ router.put('/update/:id', home.updatePost);
 
 router.delete('/delete/:id', home.deletePost);
 
+router.get('/show/:id', home.findArticleByAuthor)
+
 module.exports = router;

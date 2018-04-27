@@ -5,4 +5,6 @@ router.post('/login', index.doLogin);
 
 router.post('/register', index.doRegister);
 
+router.get('/users', index.findAllUsers)
+
 module.exports = router;

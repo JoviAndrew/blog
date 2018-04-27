@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Index from './views/Index.vue'
 import Home from './views/Home.vue'
 import Register from './views/Register.vue'
+import Blog from './views/Blog.vue'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register
+    },
+    {
+      path: '/blog/:id',
+      name: 'blog',
+      component: Blog
     }
   ]
 })
