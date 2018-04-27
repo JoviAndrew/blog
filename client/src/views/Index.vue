@@ -48,7 +48,7 @@ export default {
       let password = this.password
       let self = this
 
-      axios.post('http://localhost:3000/index/login', {username: username, password: password})
+      axios.post('http://35.187.230.112/index/login', {username: username, password: password})
         .then(function (response) {
           alert(response.data.message)
           console.log(response.data)

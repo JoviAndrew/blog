@@ -53,7 +53,7 @@ export default {
       let userId = this.$route.params.id
 			let self = this
 			let token = localStorage.getItem('token')
-			axios.get(`http://localhost:3000/home/show/${userId}`)
+			axios.get(`http://35.187.230.112/home/show/${userId}`)
 			.then(function(postData){
 				self.posts = postData.data.data                
 			})
