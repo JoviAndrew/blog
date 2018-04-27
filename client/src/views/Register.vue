@@ -51,7 +51,7 @@ name: 'register',
 				let firstname = this.firstname
 				let lastname = this.lastname
 
-				axios.post('http://35.187.230.112/index/register', 
+				axios.post('http://35.197.131.176/index/register', 
 				{
 					username: username,
 					password: password,

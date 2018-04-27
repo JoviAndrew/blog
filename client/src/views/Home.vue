@@ -121,7 +121,7 @@ export default {
 			let token = localStorage.getItem('token')
 			let username = localStorage.getItem('username')
 
-			axios.post('http://35.187.230.112/home/post', 
+			axios.post('http://35.197.131.176/home/post', 
 			{
 				header: header,
 				postText: content,
@@ -148,7 +148,7 @@ export default {
 		getAllPosts(){
 			let self = this
 			let token = localStorage.getItem('token')
-			axios.get('http://35.187.230.112/home/show', {headers: {token: token}})
+			axios.get('http://35.197.131.176/home/show', {headers: {token: token}})
 			.then(function(postData){
 				self.posts = postData.data.data                
 			})
@@ -163,7 +163,7 @@ export default {
 		deletePost(id){
 			let token = localStorage.getItem('token');
 			let self = this
-			axios.delete(`http://35.187.230.112/home/delete/${id}`, {headers: {token: token}})
+			axios.delete(`http://35.197.131.176/home/delete/${id}`, {headers: {token: token}})
 			.then(function(response){
 				alert(response.data.message)
 				self.getAllPosts()
@@ -179,7 +179,7 @@ export default {
 			let token = localStorage.getItem('token')
 			let self = this
 
-			axios.put(`http://35.187.230.112/home/update/${id}`, 
+			axios.put(`http://35.197.131.176/home/update/${id}`, 
 			{
 					header: header,
 					postText: content,
