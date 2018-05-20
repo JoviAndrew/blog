@@ -10,13 +10,13 @@ module.exports = {
     })
     .then(function(userData){
       if(!userData){
-        res.status(401).json({
+        res.status(400).json({
           message: 'Username not found!'
         })
       }else{
         let correct = bcrypt.compareSync(req.body.password, userData.password)
         if (!correct) {
-          res.status(401).json({
+          res.status(400).json({
             message: 'incorrect username or password',
           })
         } else {

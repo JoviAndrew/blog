@@ -14,6 +14,8 @@ let token = ''
 let postId = ''
 let fake_token = 'asfljabflouahgaoivhanvhaoihaoijgauiwajfaoieghalknvaUAQEOHWAPEGIHPOUIAAISHVOIHphiohvaoisvhia'
 let userId = ''
+let filename = 'x.png'
+let boundary = Math.random()
 
 // Register new user
 describe('POST /index/register', function() {
@@ -56,7 +58,7 @@ describe('POST /index/login', function() {
     })
     .end((err, res) => {
       expect(err).to.be.null
-      expect(res).to.have.status(401)
+      expect(res).to.have.status(400)
       expect(res.body).to.be.an('object')
       expect(res.body).to.haveOwnProperty('message', 'Username not found!')
       done()
@@ -73,7 +75,7 @@ describe('POST /index/login', function() {
     })
     .end((err, res) => {
       expect(err).to.be.null
-      expect(res).to.have.status(401)
+      expect(res).to.have.status(400)
       expect(res.body).to.be.an('object')
       expect(res.body).to.haveOwnProperty('message', 'incorrect username or password')
       done()
@@ -111,10 +113,16 @@ describe('posting a new post' , () => {
     chai.request(app)
     .post('/home/post')
     .type('form')
+    .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
+    .write('--' + boundary + '\r\n')
+    .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
+    .write('Content-Type: image/png\r\n')
+    .write('\r\n')
+    .write(fs.readFileSync('test/'+filename))
+    .write('\r\n--' + boundary + '--')
     .send({
       header: 'First Post!',
-      postText: 'Hello Testing new post!',
-      img: ''
+      postText: 'Hello Testing new post!'
     })
     .end((err, res) => {
       expect(res).to.have.status(400)
@@ -128,10 +136,16 @@ describe('posting a new post' , () => {
     chai.request(app)
     .post('/home/post')
     .type('form')
+    .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
+    .write('--' + boundary + '\r\n')
+    .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
+    .write('Content-Type: image/png\r\n')
+    .write('\r\n')
+    .write(fs.readFileSync('test/'+filename))
+    .write('\r\n--' + boundary + '--')
     .send({
       header: 'First Post!',
       postText: 'Hello Testing new post!',
-      img: ''
     })
     .set('token', fake_token)
     .end((err, res) => {
@@ -146,6 +160,13 @@ describe('posting a new post' , () => {
     chai.request(app)
     .post('/home/post')
     .type('form')
+    .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
+    .write('--' + boundary + '\r\n')
+    .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
+    .write('Content-Type: image/png\r\n')
+    .write('\r\n')
+    .write(fs.readFileSync('test/'+filename))
+    .write('\r\n--' + boundary + '--')
     .send({
       header: 'First Post!',
       postText: 'Hello Testing new post!',
@@ -206,6 +227,13 @@ describe('update post', () => {
       .put(`/home/update/${postId}`)
       .type('form')
       .set('token', '')
+      .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
+      .write('--' + boundary + '\r\n')
+      .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
+      .write('Content-Type: image/png\r\n')
+      .write('\r\n')
+      .write(fs.readFileSync('test/'+filename))
+      .write('\r\n--' + boundary + '--')
       .send({
           header: 'Update Post!',
           postText: 'Hello Testing update the new post!',
@@ -222,6 +250,13 @@ describe('update post', () => {
       .put(`/home/update/${postId}`)
       .type('form')
       .set('token', fake_token)
+      .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
+      .write('--' + boundary + '\r\n')
+      .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
+      .write('Content-Type: image/png\r\n')
+      .write('\r\n')
+      .write(fs.readFileSync('test/'+filename))
+      .write('\r\n--' + boundary + '--')
       .send({
           header: 'Update Post!',
           postText: 'Hello Testing update the new post!',
@@ -238,6 +273,13 @@ describe('update post', () => {
     .put(`/home/update/${postId}`)
     .type('form')
     .set('token', token)
+    .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
+    .write('--' + boundary + '\r\n')
+    .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
+    .write('Content-Type: image/png\r\n')
+    .write('\r\n')
+    .write(fs.readFileSync('test/'+filename))
+    .write('\r\n--' + boundary + '--')
     .send({
         header: 'Update Post!',
         postText: 'Hello Testing update the new post!',

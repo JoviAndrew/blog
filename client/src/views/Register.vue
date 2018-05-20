@@ -6,18 +6,18 @@
       <div class="login col-4">
         <h4 class="headerLogin"><strong>Register</strong></h4>
 				<label>First Name:</label>
-        <input type="text" placeholder="Tom" v-model="firstname">
-				<label>Last name:</label>
-        <input type="text" placeholder="Tommy" v-model="lastname">
+        <input class="form-control" type="text" placeholder="Tom" v-model="firstname">
+				<label>Last Name:</label>
+        <input class="form-control" type="text" placeholder="Tommy" v-model="lastname">
         <label>Username:</label>
-        <input type="text" placeholder="email@mail.com" v-model="username">
+        <input class="form-control" type="text" placeholder="email@mail.com" v-model="username">
         <label>Password:</label>
-        <input type="password" placeholder="6 characters alphanumeric"  v-model="password">
+        <input class="form-control" type="password" placeholder="6 characters alphanumeric"  v-model="password">
         <label>Confirm Password:</label>
-        <input type="password" placeholder="Password" v-model="confirm">
+        <input class="form-control" type="password" placeholder="Password" v-model="confirm">
         <div class="col-12">
-            <button class="btn btn-primary" @click="doRegister">Register</button>
-            <button class="btn btn-danger" @click="goToLogin">Cancel</button>
+					<button class="btn btn-primary" @click="doRegister">Register</button>
+					<router-link class="btn btn-danger" to="/">Cancel</router-link>
         </div>
       </div>
       <div class="col-4"></div>
@@ -27,7 +27,6 @@
 </template>
 
 <script>
-
 import axios from 'axios'
 
 export default {
@@ -43,42 +42,20 @@ name: 'register',
 	},
 	methods: {
 		doRegister () {
-			if(this.password != this.confirm){
-				alert('Password is not the same with Confirm Password')
-			}else{
-				let username = this.username
-				let password = this.password
-				let firstname = this.firstname
-				let lastname = this.lastname
-
-				axios.post('http://35.197.131.176/index/register', 
-				{
-					username: username,
-					password: password,
-					firstname: firstname,
-					lastname: lastname
-				})
-				.then(function(response){
-					alert(response.data.message)
-					localStorage.setItem('token', response.data.token)
-					localStorage.setItem('username', response.data.username)
-					localStorage.setItem('firstname', response.data.firstname)
-          localStorage.setItem('lastname', response.data.lastname)
-					this.$router.push('/home')
-				})
-				.catch(function(err){
-					alert(err)
-				})
+			let regisData = {
+				username: this.username,
+				password: this.password,
+				firstname: this.firstname,
+				lastname: this.lastname,
+				confirm: this.confirm
 			}
-		},
-		goToLogin () {
-				this.$router.push('/')
+			this.$store.dispatch('registerUser', regisData)
 		}
-	}
+	},
 }
 </script>
 
-<style>
+<style scoped>
 .headerLogin{
   margin: 3%;
   margin-bottom: 5%
@@ -100,5 +77,4 @@ name: 'register',
 .btn{
   margin: 2%
 }
-
 </style>
