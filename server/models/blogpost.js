@@ -5,7 +5,8 @@ let blogSchema = mongoose.Schema({
     user: { type: Schema.Types.ObjectId, ref: 'user'},
     username: String,
     header: String,
-    post_text: String, 
+    post_text: String,
+    image: String 
 }, {
     timestamps: true
 })

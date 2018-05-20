@@ -10,28 +10,31 @@ module.exports = {
     })
     .then(function(userData){
       if(!userData){
-        res.status(400).json({
-            message: 'incorrect username or password'
+        res.status(401).json({
+          message: 'Username not found!'
         })
       }else{
-        bcrypt.compare(req.body.password, userData.password, function(err, result){
-          if(!result){
-            res.json({
-                message: 'incorrect username or password'
-            })
-          }
-          else{
-            let token = jwt.sign({id: userData._id, username: userData.username}, process.env.SECRET)
-            res.json({
-                message: 'Success login',
-                token: token,
-                username: userData.username,
-                firstname: userData.firstname,
-                lastname: userData.lastname
-            })
-          }
-        })
+        let correct = bcrypt.compareSync(req.body.password, userData.password)
+        if (!correct) {
+          res.status(401).json({
+            message: 'incorrect username or password',
+          })
+        } else {
+          let token = jwt.sign({id: userData._id, username: userData.username}, process.env.SECRET)
+          res.status(200).json({
+              message: 'Success login',
+              token: token,
+              username: userData.username,
+              firstname: userData.firstname,
+              lastname: userData.lastname
+          })
+        }
       }
+    })
+    .catch (function (err) {
+      res.status(500).json({
+        err: err,
+      })
     })
   },
   doRegister(req, res){

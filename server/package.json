@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "test": "mocha"
   },
   "keywords": [],
@@ -11,7 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "bcrypt": "^2.0.1",
+    "@google-cloud/storage": "^1.6.0",
     "bcryptjs": "^2.4.3",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
@@ -21,7 +21,8 @@
     "jsonwebtoken": "^8.2.1",
     "mocha": "^5.1.0",
     "mongoose": "^5.0.16",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "multer": "^1.3.0"
   },
   "devDependencies": {
     "chai-html": "^1.1.5"
