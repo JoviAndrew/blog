@@ -33,12 +33,13 @@
 import { mapState } from 'vuex'
 
 export default {
-	name: 'blog',
-	computed:{ 
-    ...mapState(['posts'])},
-	created(){
+  name: 'blog',
+  computed: {
+    ...mapState(['posts'])
+  },
+  created () {
     this.$store.dispatch('getPostsByAuthor', this.$route.params.id)
-	},
+  }
 }
 </script>
 

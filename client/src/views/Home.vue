@@ -83,24 +83,24 @@
 </template>
 
 <script>
-import axios from 'axios'
+import swal from 'sweetalert'
 import { mapState } from 'vuex'
 
 export default {
-	name: 'home',
-	data() {
-		return{
-			username: localStorage.getItem('username'),
-			post_content: '',
-			post_header: '',
+  name: 'home',
+  data () {
+    return {
+      username: localStorage.getItem('username'),
+      post_content: '',
+      post_header: '',
       post_id: '',
       lastname: localStorage.getItem('lastname'),
       firstname: localStorage.getItem('firstname'),
       file: ''
-		}  
-	},
-	computed: {
-    ...mapState (['posts'])
+    }
+  },
+  computed: {
+    ...mapState(['posts'])
   },
   beforeCreate () {
     if (!localStorage.getItem('token')) {
@@ -113,17 +113,17 @@ export default {
   created () {
     this.checklogin()
   },
-	methods: {
-		checklogin(){
-			let username = localStorage.getItem('username')
-			if(!username){
-				this.$store.commit('changeStatusFalse')
-			}else{
+  methods: {
+    checklogin () {
+      let username = localStorage.getItem('username')
+      if (!username) {
+        this.$store.commit('changeStatusFalse')
+      } else {
         this.$store.commit('changeStatusTrue')
         this.$store.dispatch('getAllPosts', localStorage.getItem('token'))
-			}
-		},
-		addPost () {
+      }
+    },
+    addPost () {
       let formData = new FormData()
       formData.append('img', this.file)
       formData.append('header', this.post_header)
@@ -142,30 +142,30 @@ export default {
     onFilePickedUpdate () {
       this.file = this.$refs.fileUpdate.files[0]
     },
-		reset(){
-				this.post_content = ''
-				this.post_header = ''
-				this.post_id = ''
-		},
-		deletePost(id){
+    reset () {
+      this.post_content = ''
+      this.post_header = ''
+      this.post_id = ''
+    },
+    deletePost (id) {
       swal({
         title: 'Are you sure?',
         text: 'Once deleted, you will not be able to recover this Post!',
         icon: 'warning',
         buttons: true,
-        dangerMode: true,
+        dangerMode: true
       })
-      .then((willDelete) => {
-        if (willDelete) {
-          let deleteData = {
-            token: localStorage.getItem('token'),
-            id: id
+        .then((willDelete) => {
+          if (willDelete) {
+            let deleteData = {
+              token: localStorage.getItem('token'),
+              id: id
+            }
+            this.$store.dispatch('deletePost', deleteData)
           }
-          this.$store.dispatch('deletePost', deleteData)
-        }
-      })
-		},
-		updatePost(id){
+        })
+    },
+    updatePost (id) {
       let formData = new FormData()
       formData.append('img', this.file)
       formData.append('header', this.post_header)
@@ -177,13 +177,13 @@ export default {
       }
       this.$store.dispatch('updatePost', updateData)
       this.reset()
-		},
-		setForUpdate(index){
-			this.post_header = this.posts[index].header
-			this.post_content = this.posts[index].post_text
-			this.post_id = this.posts[index]._id
-		}
-	}
+    },
+    setForUpdate (index) {
+      this.post_header = this.posts[index].header
+      this.post_content = this.posts[index].post_text
+      this.post_id = this.posts[index]._id
+    }
+  }
 }
 </script>
 

@@ -38,7 +38,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'index',
   computed: {
-    ...mapState(['users'])  
+    ...mapState(['users'])
   },
   created () {
     this.$store.dispatch('getAllUsers')
@@ -58,10 +58,8 @@ export default {
         username: this.username,
         password: this.password
       }
-      let username = this.username
-      let password = this.password
       this.$store.dispatch('loginUser', loginData)
-    },
+    }
   }
 }
 </script>

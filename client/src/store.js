@@ -38,21 +38,22 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    getAllUsers({commit}){
+    getAllUsers ({ commit }) {
       axios.get('http://localhost:3000/index/users')
-      .then(function(userData){
-        commit('renewUsers', userData)
-      })
-      .catch(function(err){
-        alert(err)
-      })
+        .then(function (userData) {
+          commit('renewUsers', userData)
+        })
+        .catch(function (err) {
+          swal(err.response.data.message)
+          console.log(err)
+        })
     },
-    loginUser ({commit}, loginData) {
+    loginUser ({ commit }, loginData) {
       axios.post('http://localhost:3000/index/login',
-      {
-        username: loginData.username, 
-        password: loginData.password
-      })
+        {
+          username: loginData.username,
+          password: loginData.password
+        })
         .then(function (response) {
           let message = response.data.message
           if (message !== 'Success login') {
@@ -72,108 +73,106 @@ export default new Vuex.Store({
           console.log(err)
         })
     },
-    registerUser ({commit}, regisData) {
-      if(regisData.password != regisData.confirm){
-				alert('Password is not the same with Confirm Password')
-			}else{
-				let username = regisData.username
-				let password = regisData.password
-				let firstname = regisData.firstname
-				let lastname = regisData.lastname
-
-				axios.post('http://localhost:3000/index/register', 
-				{
-					username: username,
-					password: password,
-					firstname: firstname,
-					lastname: lastname
-				})
-				.then(function(response){
-          let message = response.data.message
-          if (message !== 'success register a new user') {
-            swal(message, {icon: 'warning'})
-          } else {
-            swal(message, {icon: 'success'})
-            localStorage.setItem('token', response.data.token)
-            localStorage.setItem('username', response.data.username)
-            localStorage.setItem('firstname', response.data.firstname)
-            localStorage.setItem('lastname', response.data.lastname)
-            router.push('/home')
-            commit('changeStatusTrue')
-          }
-				})
-				.catch(function(err){
-					alert(err)
-        })
+    registerUser ({ commit }, regisData) {
+      if (regisData.password !== regisData.confirm) {
+        swal('Password is not the same with Confirm Password', { icon: 'warning' })
+      } else {
+        let username = regisData.username
+        let password = regisData.password
+        let firstname = regisData.firstname
+        let lastname = regisData.lastname
+        axios.post('http://localhost:3000/index/register',
+          {
+            username: username,
+            password: password,
+            firstname: firstname,
+            lastname: lastname
+          })
+          .then(function (response) {
+            let message = response.data.message
+            if (message !== 'success register a new user') {
+              swal(message, {icon: 'warning'})
+            } else {
+              swal(message, {icon: 'success'})
+              localStorage.setItem('token', response.data.token)
+              localStorage.setItem('username', response.data.username)
+              localStorage.setItem('firstname', response.data.firstname)
+              localStorage.setItem('lastname', response.data.lastname)
+              router.push('/home')
+              commit('changeStatusTrue')
+            }
+          })
+          .catch(function (err) {
+            alert(err)
+          })
       }
     },
-    getAllPosts ({commit}, token) {
+    getAllPosts ({ commit }, token) {
       axios.get('http://localhost:3000/home/show',
-      {
-        headers: {token: token}
-      })
-			.then(function(postData){
-        commit('setPosts', postData.data.data)
-			})
-			.catch(function(err){
-        swal(err.response.data.message, {icon: 'warning'})
-				console.log(err)
-			})
+        {
+          headers: {token: token}
+        })
+        .then(function (postData) {
+          commit('setPosts', postData.data.data)
+        })
+        .catch(function (err) {
+          swal(err.response.data.message, {icon: 'warning'})
+          console.log(err)
+        })
     },
-    addNewPost ({dispatch}, postInput) {
+    addNewPost ({ dispatch }, postInput) {
       axios.post('http://localhost:3000/home/post',
-      postInput.data,
-			  { headers: {
-          token: postInput.token,
-        }}
-			)
-			.then(function (response) {
-        swal(response.data.message, {icon: 'success'})
-        dispatch('getAllPosts', postInput.token)
-			})
-			.catch(function(err){
-				swal(err.response.data.message)
-				console.log(err)
-			})
+        postInput.data,
+        {
+          headers: { token: postInput.token }
+        })
+        .then(function (response) {
+          swal(response.data.message, {icon: 'success'})
+          dispatch('getAllPosts', postInput.token)
+        })
+        .catch(function (err) {
+          swal(err.response.data.message)
+          console.log(err)
+        })
     },
-    getPostsByAuthor ({commit}, userId) {
+    getPostsByAuthor ({ commit }, userId) {
       axios.get(`http://localhost:3000/home/show/${userId}`)
-      .then(function(postData){
-        commit('setPosts', postData.data.data)
-      })
-      .catch(function(err){
-        swal(err.response.data.message, {icon: 'warning'})
-        console.log(err)
-      })
+        .then(function (postData) {
+          commit('setPosts', postData.data.data)
+        })
+        .catch(function (err) {
+          swal(err.response.data.message, {icon: 'warning'})
+          console.log(err)
+        })
     },
-    updatePost ({dispatch}, updateData) {
+    updatePost ({ dispatch }, updateData) {
       axios.put(`http://localhost:3000/home/update/${updateData.id}`,
-      updateData.data,
-      {
-        headers: {token: updateData.token}
-			})
-			.then(function(response){
-        swal(response.data.message, {icon: 'success'})
-        dispatch('getAllPosts', updateData.token)
-			})
-			.catch(function(err){
-				swal(err.response.data.message, {icon: 'warning'})
-				console.log(err)
-			})
+        updateData.data,
+        {
+          headers: {token: updateData.token}
+        })
+        .then(function (response) {
+          swal(response.data.message, {icon: 'success'})
+          dispatch('getAllPosts', updateData.token)
+        })
+        .catch(function (err) {
+          swal(err.response.data.message, {icon: 'warning'})
+          console.log(err)
+        })
     },
-    deletePost ({dispatch}, deleteData) {
+    deletePost ({ dispatch }, deleteData) {
       axios.delete(`http://localhost:3000/home/delete/${deleteData.id}`,
-      {
-        headers: {token: deleteData.token}
-      })
-			.then(function(response){
-        swal(response.data.message, {icon: 'success'})
-        dispatch('getAllPosts', deleteData.token)
-			})
-			.catch(function(err){
-				swal(err.response.data.message, {icon: 'warning'})
-				console.log(err)
-			})
+        {
+          headers: {token: deleteData.token}
+        })
+        .then(function (response) {
+          swal(response.data.message, {icon: 'success'})
+          dispatch('getAllPosts', deleteData.token)
+        })
+        .catch(function (err) {
+          swal(err.response.data.message, {icon: 'warning'})
+          console.log(err)
+        })
     }
   }
 })

@@ -16,6 +16,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import swal from 'sweetalert'
 
 export default {
   computed: mapState([
@@ -27,30 +28,27 @@ export default {
     },
     doLogout () {
       swal({
-        title: "Logout!",
-        text: "Are you sure you want to logout?",
-        icon: "warning",
+        title: 'Logout!',
+        text: 'Are you sure you want to logout?',
+        icon: 'warning',
         buttons: true,
-        dangerMode: true,
+        dangerMode: true
       })
-      .then((logout) => {
-        if (logout) {
-          localStorage.removeItem('firstname')
-          localStorage.removeItem('lastname')
-          localStorage.removeItem('token')
-          localStorage.removeItem('username')
-          this.$router.push('/')
-          this.$store.commit('changeStatusFalse')
-          swal("Successfully logged out", {
-            icon: "success",
-          });
-        }
-      });
+        .then((logout) => {
+          if (logout) {
+            localStorage.removeItem('firstname')
+            localStorage.removeItem('lastname')
+            localStorage.removeItem('token')
+            localStorage.removeItem('username')
+            this.$router.push('/')
+            this.$store.commit('changeStatusFalse')
+            swal('Successfully logged out', { icon: 'success' })
+          }
+        })
     }
   }
 }
 </script>
-
 
 <style>
 #app {

@@ -5,9 +5,9 @@
       <div class="col-4"></div>
       <div class="login col-4">
         <h4 class="headerLogin"><strong>Register</strong></h4>
-				<label>First Name:</label>
+        <label>First Name:</label>
         <input class="form-control" type="text" placeholder="Tom" v-model="firstname">
-				<label>Last Name:</label>
+        <label>Last Name:</label>
         <input class="form-control" type="text" placeholder="Tommy" v-model="lastname">
         <label>Username:</label>
         <input class="form-control" type="text" placeholder="email@mail.com" v-model="username">
@@ -16,8 +16,8 @@
         <label>Confirm Password:</label>
         <input class="form-control" type="password" placeholder="Password" v-model="confirm">
         <div class="col-12">
-					<button class="btn btn-primary" @click="doRegister">Register</button>
-					<router-link class="btn btn-danger" to="/">Cancel</router-link>
+          <button class="btn btn-primary" @click="doRegister">Register</button>
+          <router-link class="btn btn-danger" to="/">Cancel</router-link>
         </div>
       </div>
       <div class="col-4"></div>
@@ -27,28 +27,26 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
-name: 'register',
-	data () {
-		return {
-			username: '',
-			password: '',
-			confirm: '',
-			firstname: '',
-			lastname: ''
-		}
-	},
-	methods: {
-		doRegister () {
-			let regisData = {
-				username: this.username,
-				password: this.password,
-				firstname: this.firstname,
-				lastname: this.lastname,
-				confirm: this.confirm
-			}
+  name: 'register',
+  data () {
+    return {
+      username: '',
+      password: '',
+      confirm: '',
+      firstname: '',
+      lastname: ''
+    }
+  },
+  methods: {
+    doRegister () {
+      let regisData = {
+        username: this.username,
+        password: this.password,
+        firstname: this.firstname,
+        lastname: this.lastname,
+        confirm: this.confirm
+      }
       this.$store.dispatch('registerUser', regisData)
     }
   }
