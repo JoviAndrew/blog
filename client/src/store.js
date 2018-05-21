@@ -39,17 +39,16 @@ export default new Vuex.Store({
   },
   actions: {
     getAllUsers ({ commit }) {
-      axios.get('http://localhost:3000/index/users')
+      axios.get('http://35.198.213.247/index/users')
         .then(function (userData) {
           commit('renewUsers', userData)
         })
         .catch(function (err) {
           swal(err.response.data.message)
-          console.log(err)
         })
     },
     loginUser ({ commit }, loginData) {
-      axios.post('http://localhost:3000/index/login',
+      axios.post('http://35.198.213.247/index/login',
         {
           username: loginData.username,
           password: loginData.password
@@ -70,7 +69,6 @@ export default new Vuex.Store({
         })
         .catch(function (err) {
           swal(err.response.data.message, {icon: 'warning'})
-          console.log(err)
         })
     },
     registerUser ({ commit }, regisData) {
@@ -81,7 +79,7 @@ export default new Vuex.Store({
         let password = regisData.password
         let firstname = regisData.firstname
         let lastname = regisData.lastname
-        axios.post('http://localhost:3000/index/register',
+        axios.post('http://35.198.213.247/index/register',
           {
             username: username,
             password: password,
@@ -108,7 +106,7 @@ export default new Vuex.Store({
       }
     },
     getAllPosts ({ commit }, token) {
-      axios.get('http://localhost:3000/home/show',
+      axios.get('http://35.198.213.247/home/show',
         {
           headers: {token: token}
         })
@@ -117,11 +115,10 @@ export default new Vuex.Store({
         })
         .catch(function (err) {
           swal(err.response.data.message, {icon: 'warning'})
-          console.log(err)
         })
     },
     addNewPost ({ dispatch }, postInput) {
-      axios.post('http://localhost:3000/home/post',
+      axios.post('http://35.198.213.247/home/post',
         postInput.data,
         {
           headers: { token: postInput.token }
@@ -132,21 +129,19 @@ export default new Vuex.Store({
         })
         .catch(function (err) {
           swal(err.response.data.message)
-          console.log(err)
         })
     },
     getPostsByAuthor ({ commit }, userId) {
-      axios.get(`http://localhost:3000/home/show/${userId}`)
+      axios.get(`http://35.198.213.247/home/show/${userId}`)
         .then(function (postData) {
           commit('setPosts', postData.data.data)
         })
         .catch(function (err) {
           swal(err.response.data.message, {icon: 'warning'})
-          console.log(err)
         })
     },
     updatePost ({ dispatch }, updateData) {
-      axios.put(`http://localhost:3000/home/update/${updateData.id}`,
+      axios.put(`http://35.198.213.247/home/update/${updateData.id}`,
         updateData.data,
         {
           headers: {token: updateData.token}
@@ -157,11 +152,10 @@ export default new Vuex.Store({
         })
         .catch(function (err) {
           swal(err.response.data.message, {icon: 'warning'})
-          console.log(err)
         })
     },
     deletePost ({ dispatch }, deleteData) {
-      axios.delete(`http://localhost:3000/home/delete/${deleteData.id}`,
+      axios.delete(`http://35.198.213.247/home/delete/${deleteData.id}`,
         {
           headers: {token: deleteData.token}
         })
@@ -171,7 +165,6 @@ export default new Vuex.Store({
         })
         .catch(function (err) {
           swal(err.response.data.message, {icon: 'warning'})
-          console.log(err)
         })
     }
   }
