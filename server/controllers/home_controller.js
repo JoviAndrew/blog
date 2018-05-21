@@ -30,27 +30,33 @@ module.exports = {
   addPost(req, res){
     const token = req.headers.token
     jwt.verify(token, process.env.SECRET, function(err, result){
-        if(err){
-          res.status(400).json({
-            err: err,
-            message: err.message
+      if(err){
+        res.status(400).json({
+          err: err,
+          message: err.message
+        })
+      }
+      else{
+        posts.create({
+            user: result.id,
+            header: req.body.header,
+            post_text: req.body.postText,
+            username: req.body.username,
+            image: req.file.cloudStoragePublicUrl
           })
-        }
-        else{
-            posts.create({
-              user: result.id,
-              header: req.body.header,
-              post_text: req.body.postText,
-              username: req.body.username,
-              image: req.file.cloudStoragePublicUrl
+          .then(function(response){
+            res.status(200).json({
+              message: 'Success added new post!',
+              response: response
             })
-            .then(function(response){
-              res.status(200).json({
-                message: 'Success added new post!',
-                response: response
-              })
+          })
+          .catch(function(err) {
+            res.status(500).json({
+              message: err.message,
+              err: err
             })
-        }
+          })
+      }
     })
   },
   updatePost(req, res){
@@ -94,7 +100,6 @@ module.exports = {
   deletePost(req, res){
     let id = req.params.id
     const token = req.headers.token
-    console.log(token)
     jwt.verify(token, process.env.SECRET, function(err, result){
       if(err){
         res.status(400).json({
@@ -140,12 +145,6 @@ module.exports = {
         message: err.message,
         err: err
       })
-    })
-  },
-  uploadImg(req, res){
-    res.json({
-        message: 'Successfully upload',
-        link: req.file.cloudStoragePublicUrl
     })
   },
 }

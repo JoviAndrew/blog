@@ -10,7 +10,8 @@ export default new Vuex.Store({
   state: {
     isLogin: false,
     users: [],
-    author: ''
+    author: '',
+    posts: []
   },
   mutations: {
     changeStatusTrue (state) {
@@ -24,6 +25,16 @@ export default new Vuex.Store({
     },
     storeUserId (state, userData) {
       state.author = userData
+    },
+    setPosts (state, postData) {
+      postData.forEach(data => {
+        let date = new Date(data.createdAt)
+        data.createdAt = date
+      })
+      postData.sort(function (a, b) {
+        return b.createdAt - a.createdAt
+      })
+      state.posts = postData
     }
   },
   actions: {
@@ -79,7 +90,7 @@ export default new Vuex.Store({
 				})
 				.then(function(response){
           let message = response.data.message
-          if (message !== 'Success login') {
+          if (message !== 'success register a new user') {
             swal(message, {icon: 'warning'})
           } else {
             swal(message, {icon: 'success'})
@@ -95,6 +106,74 @@ export default new Vuex.Store({
 					alert(err)
         })
       }
+    },
+    getAllPosts ({commit}, token) {
+      axios.get('http://localhost:3000/home/show',
+      {
+        headers: {token: token}
+      })
+			.then(function(postData){
+        commit('setPosts', postData.data.data)
+			})
+			.catch(function(err){
+        swal(err.response.data.message, {icon: 'warning'})
+				console.log(err)
+			})
+    },
+    addNewPost ({dispatch}, postInput) {
+      axios.post('http://localhost:3000/home/post',
+      postInput.data,
+			  { headers: {
+          token: postInput.token,
+        }}
+			)
+			.then(function (response) {
+        swal(response.data.message, {icon: 'success'})
+        dispatch('getAllPosts', postInput.token)
+			})
+			.catch(function(err){
+				swal(err.response.data.message)
+				console.log(err)
+			})
+    },
+    getPostsByAuthor ({commit}, userId) {
+      axios.get(`http://localhost:3000/home/show/${userId}`)
+      .then(function(postData){
+        commit('setPosts', postData.data.data)
+      })
+      .catch(function(err){
+        swal(err.response.data.message, {icon: 'warning'})
+        console.log(err)
+      })
+    },
+    updatePost ({dispatch}, updateData) {
+      axios.put(`http://localhost:3000/home/update/${updateData.id}`,
+      updateData.data,
+      {
+        headers: {token: updateData.token}
+			})
+			.then(function(response){
+        swal(response.data.message, {icon: 'success'})
+        dispatch('getAllPosts', updateData.token)
+			})
+			.catch(function(err){
+				swal(err.response.data.message, {icon: 'warning'})
+				console.log(err)
+			})
+    },
+    deletePost ({dispatch}, deleteData) {
+      axios.delete(`http://localhost:3000/home/delete/${deleteData.id}`,
+      {
+        headers: {token: deleteData.token}
+      })
+			.then(function(response){
+        swal(response.data.message, {icon: 'success'})
+        dispatch('getAllPosts', deleteData.token)
+			})
+			.catch(function(err){
+				swal(err.response.data.message, {icon: 'warning'})
+				console.log(err)
+			})
     }
   }
 })

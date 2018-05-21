@@ -3,7 +3,8 @@
     <div class="row">
       <div class="col-12">
         <nav class="navbar justify-content-between navbar-light bg-light">
-          <strong><a class="navbar-brand navbar-nav mr-auto" href="">N-Blog</a></strong>
+          <strong><a class="navbar-brand navbar-nav mr-auto">N-Blog</a></strong>
+            <router-link v-if="isLogin" class="btn btn-outline-primary" to="/home">Home</router-link>
             <button v-if="isLogin" class="btn btn-outline-danger my-2 my-sm-0" @click="doLogout">Log out</button>
             <button v-else class="btn btn-outline-success my-2 my-sm-0" @click="gotoLogin">Log in</button>
         </nav>
@@ -17,12 +18,6 @@
 import { mapState } from 'vuex'
 
 export default {
-  data () {
-    return {
-      showLogin: true,
-      showLogout: false
-    }
-  },
   computed: mapState([
     'isLogin'
   ]),
@@ -31,11 +26,26 @@ export default {
       this.$router.push('/')
     },
     doLogout () {
-      localStorage.clear()
-      this.showLogin = true
-      this.showLogout = false
-      this.$router.push('/')
-      this.$store.commit('changeStatusFalse')
+      swal({
+        title: "Logout!",
+        text: "Are you sure you want to logout?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((logout) => {
+        if (logout) {
+          localStorage.removeItem('firstname')
+          localStorage.removeItem('lastname')
+          localStorage.removeItem('token')
+          localStorage.removeItem('username')
+          this.$router.push('/')
+          this.$store.commit('changeStatusFalse')
+          swal("Successfully logged out", {
+            icon: "success",
+          });
+        }
+      });
     }
   }
 }

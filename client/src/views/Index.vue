@@ -2,8 +2,8 @@
 <div id="index">
   <div class="row">
     <div class="mainBody col-12">
-      <div class="col-xs-12 col-sm-12 col-lg-4"></div>
-      <div class="login col-xs-12 col-sm-12 col-lg-4">
+      <div class="col-xs-12 col-lg-4"></div>
+      <div class="login col-xs-12 col-lg-4">
         <h4 class="headerLogin"><strong>Login</strong></h4>
         <label>Username</label>
         <input class="form-control" type="text" placeholder="email@mail.com" v-model="username">
@@ -12,7 +12,7 @@
         <button class="btn btn-primary" @click="doLogin">Login</button>
         <router-link class="btn btn-link" to="/register">Don't have an account? Register</router-link>
       </div>
-      <div class="col-xs-12 col-sm-12 col-lg-4">
+      <div class="col-xs-12 col-lg-4">
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@
       <h3>See their work!</h3>
       <ul class="list-group">
         <li class="list-group-item" v-for="(user, index) in users" :key="index">
-          <router-link :to="{ name: 'blog', params: { userId: user._id }}">
+          <router-link :to="{ name: 'blog', params: { id: user._id }}">
             {{user.firstname}} {{user.lastname}}
           </router-link>
         </li>
@@ -38,12 +38,13 @@ import { mapState } from 'vuex'
 export default {
   name: 'index',
   computed: {
-    ...mapState([
-      'users'
-    ])  
+    ...mapState(['users'])  
   },
   created () {
     this.$store.dispatch('getAllUsers')
+    if (localStorage.getItem('token') !== null) {
+      this.$router.push('/home')
+    }
   },
   data () {
     return {
@@ -65,7 +66,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .headerLogin{
   margin: 3%;

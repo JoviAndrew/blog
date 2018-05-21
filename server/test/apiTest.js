@@ -14,8 +14,7 @@ let token = ''
 let postId = ''
 let fake_token = 'asfljabflouahgaoivhanvhaoihaoijgauiwajfaoieghalknvaUAQEOHWAPEGIHPOUIAAISHVOIHphiohvaoisvhia'
 let userId = ''
-let filename = 'x.png'
-let boundary = Math.random()
+let filename = '2018-05-07T04_14_55.901Zhorse.png'
 
 // Register new user
 describe('POST /index/register', function() {
@@ -113,14 +112,8 @@ describe('posting a new post' , () => {
     chai.request(app)
     .post('/home/post')
     .type('form')
-    .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
-    .write('--' + boundary + '\r\n')
-    .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
-    .write('Content-Type: image/png\r\n')
-    .write('\r\n')
-    .write(fs.readFileSync('test/'+filename))
-    .write('\r\n--' + boundary + '--')
-    .send({
+    .attach('img', filename)
+    .field({
       header: 'First Post!',
       postText: 'Hello Testing new post!'
     })
@@ -136,14 +129,8 @@ describe('posting a new post' , () => {
     chai.request(app)
     .post('/home/post')
     .type('form')
-    .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
-    .write('--' + boundary + '\r\n')
-    .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
-    .write('Content-Type: image/png\r\n')
-    .write('\r\n')
-    .write(fs.readFileSync('test/'+filename))
-    .write('\r\n--' + boundary + '--')
-    .send({
+    .attach('img', filename)
+    .field({
       header: 'First Post!',
       postText: 'Hello Testing new post!',
     })
@@ -160,14 +147,8 @@ describe('posting a new post' , () => {
     chai.request(app)
     .post('/home/post')
     .type('form')
-    .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
-    .write('--' + boundary + '\r\n')
-    .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
-    .write('Content-Type: image/png\r\n')
-    .write('\r\n')
-    .write(fs.readFileSync('test/'+filename))
-    .write('\r\n--' + boundary + '--')
-    .send({
+    .attach('img', filename)
+    .field({
       header: 'First Post!',
       postText: 'Hello Testing new post!',
       img: ''
@@ -227,17 +208,10 @@ describe('update post', () => {
       .put(`/home/update/${postId}`)
       .type('form')
       .set('token', '')
-      .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
-      .write('--' + boundary + '\r\n')
-      .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
-      .write('Content-Type: image/png\r\n')
-      .write('\r\n')
-      .write(fs.readFileSync('test/'+filename))
-      .write('\r\n--' + boundary + '--')
-      .send({
+      .attach('img', filename)
+      .field({
           header: 'Update Post!',
           postText: 'Hello Testing update the new post!',
-          img: ''
       })
       .end((err, res) => {
         expect(res).to.have.status(400)
@@ -250,17 +224,10 @@ describe('update post', () => {
       .put(`/home/update/${postId}`)
       .type('form')
       .set('token', fake_token)
-      .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
-      .write('--' + boundary + '\r\n')
-      .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
-      .write('Content-Type: image/png\r\n')
-      .write('\r\n')
-      .write(fs.readFileSync('test/'+filename))
-      .write('\r\n--' + boundary + '--')
-      .send({
+      .attach('img', filename)
+      .field({
           header: 'Update Post!',
           postText: 'Hello Testing update the new post!',
-          img: ''
       })
       .end((err, res) => {
         expect(res).to.have.status(400)
@@ -273,17 +240,10 @@ describe('update post', () => {
     .put(`/home/update/${postId}`)
     .type('form')
     .set('token', token)
-    .set('Content-Type', 'multipart/form-data; boundary=' + boundary)
-    .write('--' + boundary + '\r\n')
-    .write('Content-Disposition: form-data; name="image"; filename="'+filename+'"\r\n')
-    .write('Content-Type: image/png\r\n')
-    .write('\r\n')
-    .write(fs.readFileSync('test/'+filename))
-    .write('\r\n--' + boundary + '--')
-    .send({
+    .attach('img', filename)
+    .field({
         header: 'Update Post!',
         postText: 'Hello Testing update the new post!',
-        img: ''
     })
     .end((err, res) => {
       expect(err).to.be.null

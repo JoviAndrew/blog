@@ -49,9 +49,9 @@ name: 'register',
 				lastname: this.lastname,
 				confirm: this.confirm
 			}
-			this.$store.dispatch('registerUser', regisData)
-		}
-	},
+      this.$store.dispatch('registerUser', regisData)
+    }
+  }
 }
 </script>
 
